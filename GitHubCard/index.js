@@ -2,9 +2,12 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
-axios.get('https://api.github.com/users/skeeb32').then(response => {
-  console.log(response);
-});
+axios.get('https://api.github.com/users/skeeb32').then(data => {
+  // console.log(response);
+  console.log('data: ', data)
+  const myInfo = data.data;
+  console.log('UserInfo: ', myInfo)
+
 // });
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -16,6 +19,11 @@ axios.get('https://api.github.com/users/skeeb32').then(response => {
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
 */
+const cards = document.querySelector('.cards')
+const cardInfo = gitFollowers(myInfo)
+cards.appendChild(cardInfo)
+
+});
 
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
@@ -27,7 +35,8 @@ axios.get('https://api.github.com/users/skeeb32').then(response => {
           user, and adding that card to the DOM.
 */
 
-const followersArray = ['skeeb32', 'faridhamida', 'ktjhan', 'katrinafinney',];
+const followersArray = ['faridhamida', 'ktjhan', 'katrinafinney', 'crutledgedev',
+'bigknell'];
 
 followersArray.forEach(user => {
   axios.get(`https://api.github.com/users/${user}`).then(data => {
@@ -72,6 +81,7 @@ function gitFollowers(object) {
     bio = document.createElement('p');
 
   card.appendChild(img);
+  card.appendChild(cardInfo);
   cardInfo.appendChild(name);
   cardInfo.appendChild(username);
   cardInfo.appendChild(location);
@@ -89,12 +99,12 @@ function gitFollowers(object) {
   console.log(card);
   //set content
   img.src = object.avatar_url;
-  location.textContent = `locaton: ${object.location}`;
+  location.textContent = object.location;
   name.textContent = object.name;
   username.textContent = object.login;
   const theProfileLink = object.avatar_url;
   links.innerHTML = theProfileLink.link(object.url);
-  followers.textContent = `Followers: ${object.url}`;
+  followers.textContent = `Followers: ${object.followers}`;
   following.textContent = `Following: ${object.following}`;
   bio.textContent = object.bio;
 
